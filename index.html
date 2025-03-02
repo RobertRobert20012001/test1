@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ایجاد فایل متنی</title>
+    <title>ایجاد فایل متنی 111و ارسال به GitHub</title>
 </head>
 <body>
-    <h1>ساخت فایل متنی حاوی نام علی</h1>
-    <button onclick="downloadFile()">دانلود فایل</button>
+    <h1>ایجاد فایل متنی و ارسال به GitHub</h1>
+    <button onclick="uploadFileToGitHub()">ارسال به GitHub</button>
 
     <script>
-        function downloadFile() {
-            // ایجاد داده برای فایل متنی
-            const data = "علی";
+        // توکن دسترسی شخصی GitHub (شما باید این توکن را وارد کنید)
+        const githubToken = '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';  // توکن خود را وارد کنید
+        const repoOwner = 'RobertRobert20012001';  // نام کاربری GitHub شما
+        const repoName = 'test1';  // نام پروژه (ریپازیتوری) شما
+        const filePath = 'name.txt';  // نام فایلی که می‌خواهید ایجاد کنید
 
-            // ایجاد Blob از داده
-            const blob = new Blob([data], { type: 'text/plain' });
+        // داده‌ای که در فایل متنی ذخیره می‌شود
+        const fileData = 'علی';
 
-            // ایجاد لینک دانلود
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'name.txt';
+        // ارسال فایل به GitHub
+        function uploadFileToGitHub() {
+            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+            const data = {
+                message: "اضافه کردن فایل name.txt با نام علی",
+                content: btoa(fileData) // تبدیل داده به base64
+            };
 
-            // فعال کردن لینک دانلود
-            link.click();
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${githubToken}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('فایل با موفقیت ارسال شد:', data);
+                alert('فایل با موفقیت به GitHub ارسال شد');
+            })
+            .catch(error => {
+                console.error('خطا در ارسال فایل:', error);
+                alert('خطا در ارسال فایل');
+            });
         }
     </script>
 </body>
