@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ایجاد فایل متنی 111و ارسال به GitHub</title>
+    <title>ایجاد فایل متنی22 و ارسال به GitHub</title>
 </head>
 <body>
     <h1>ایجاد فایل متنی و ارسال به GitHub</h1>
@@ -11,7 +11,7 @@
 
     <script>
         // توکن دسترسی شخصی GitHub (شما باید این توکن را وارد کنید)
-        const githubToken = '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';  // توکن خود را وارد کنید
+        const githubToken = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN';  // توکن خود را وارد کنید
         const repoOwner = 'RobertRobert20012001';  // نام کاربری GitHub شما
         const repoName = 'test1';  // نام پروژه (ریپازیتوری) شما
         const filePath = 'name.txt';  // نام فایلی که می‌خواهید ایجاد کنید
@@ -19,12 +19,19 @@
         // داده‌ای که در فایل متنی ذخیره می‌شود
         const fileData = 'علی';
 
+        // تبدیل داده به base64
+        function toBase64(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str); // تبدیل به بایت‌های UTF-8
+            return btoa(String.fromCharCode.apply(null, data)); // تبدیل به Base64
+        }
+
         // ارسال فایل به GitHub
         function uploadFileToGitHub() {
             const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
             const data = {
                 message: "اضافه کردن فایل name.txt با نام علی",
-                content: btoa(fileData) // تبدیل داده به base64
+                content: toBase64(fileData) // استفاده از تابع تبدیل به Base64
             };
 
             fetch(url, {
