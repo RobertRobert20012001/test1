@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ایجاد فایل متنی و ارسال به GitHub</title>
+    <title>ایجاد فایل متنی3333و ارسال به GitHub</title>
 </head>
 <body>
     <h1>ایجاد فایل متنی و ارسال به GitHub</h1>
@@ -14,10 +14,10 @@
         const githubToken = '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';  // توکن شما وارد شده است
         const repoOwner = 'RobertRobert20012001';  // نام کاربری GitHub شما
         const repoName = 'test1';  // نام پروژه (ریپازیتوری) شما
-        const filePath = 'name.txt';  // نام فایلی که می‌خواهید ایجاد کنید
+        const filePath = 'test.txt';  // نام فایلی که می‌خواهید تغییر دهید
 
         // داده‌ای که در فایل متنی ذخیره می‌شود
-        const fileData = 'علی';
+        const fileData = 'Ali';
 
         // تبدیل داده به base64
         function toBase64(str) {
@@ -28,20 +28,39 @@
 
         // ارسال فایل به GitHub
         function uploadFileToGitHub() {
+            // ابتدا باید اطلاعات فایل موجود را از GitHub بگیریم تا SHA آن را داشته باشیم
             const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
-            const data = {
-                message: "اضافه کردن فایل name.txt با نام علی",
-                content: toBase64(fileData) // استفاده از تابع تبدیل به Base64
-            };
 
+            // ابتدا اطلاعات فایل موجود را می‌گیریم
             fetch(url, {
-                method: 'PUT',
+                method: 'GET',
                 headers: {
                     'Authorization': `token ${githubToken}`,
                     'Accept': 'application/vnd.github.v3+json',
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const sha = data.sha; // دریافت SHA از پاسخ
+
+                // حالا فایل را با محتوای جدید و SHA فایل قدیمی به روز رسانی می‌کنیم
+                const updateData = {
+                    message: "تغییر محتوای فایل test.txt به 'Ali'",
+                    content: toBase64(fileData),
+                    sha: sha
+                };
+
+                // ارسال درخواست PUT برای به روز رسانی فایل
+                return fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
             })
             .then(response => response.json())
             .then(data => {
