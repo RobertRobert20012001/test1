@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سلام</title>
+    <title>ایجاد فایل متنی</title>
 </head>
 <body>
-    <h1>سلام</h1>
-    <p>کمک می‌خواهید؟</p>
+    <h1>ساخت فایل متنی حاوی نام علی</h1>
+    <button onclick="downloadFile()">دانلود فایل</button>
+
+    <script>
+        function downloadFile() {
+            // ایجاد داده برای فایل متنی
+            const data = "علی";
+
+            // ایجاد Blob از داده
+            const blob = new Blob([data], { type: 'text/plain' });
+
+            // ایجاد لینک دانلود
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'name.txt';
+
+            // فعال کردن لینک دانلود
+            link.click();
+        }
+    </script>
 </body>
 </html>
